@@ -1,0 +1,61 @@
+
+
+USE MASTER
+CREATE DATABASE DBAppIngles
+
+USE DBAppIngles
+CREATE TABLE tblEstudiante (
+IDEst INT PRIMARY KEY,
+DNIEst INT NOT NULL,
+EstApellidoPaterno VARCHAR(25) NOT NULL,
+EstApellidoMaterno VARCHAR(25) NOT NULL,
+EstNombre VARCHAR(25) NOT NULL,
+EstGenero VARCHAR (20) NOT NULL,
+EstEmail VARCHAR(80) NOT NULL,
+EstPassword VARCHAR(30) NOT NULL)
+
+CREATE TABLE tblDocente (
+IDDocente INT PRIMARY KEY,
+DNIDoc INT NOT NULL,
+DocApellidoPaterno VARCHAR(25) NOT NULL,
+DocApellidoMaterno VARCHAR(25) NOT NULL,
+DocNombre VARCHAR(25) NOT NULL,
+DocGenero VARCHAR (20) NOT NULL,
+DocEmail VARCHAR(80) NOT NULL,
+DocPassword VARCHAR(30) NOT NULL)
+
+CREATE TABLE tblNiveles (
+IDNivel INT PRIMARY KEY,
+IDEst INT NOT NULL,
+NivNombre VARCHAR (25) NOT NULL,
+FOREIGN KEY (IDEst) REFERENCES tblEstudiante (IDEst))
+
+CREATE TABLE tblTemario (
+IDTemario INT PRIMARY KEY,
+TemNombre VARCHAR (25) NOT NULL,
+IDNivel INT NOT NULL,
+FOREIGN KEY (IDNivel) REFERENCES tblNiveles (IDNivel))
+
+CREATE TABLE tblNotas (
+IDNotas INT PRIMARY KEY,
+IDDocente INT NOT NULL,
+IDEst INT NOT NULL,
+Examen1 DECIMAL NOT NULL,
+Examen2 DECIMAL NOT NULL,
+Examen3 DECIMAL NOT NULL,
+FOREIGN KEY (IDDocente) REFERENCES tblDocente (IDDocente),
+FOREIGN KEY (IDEst) REFERENCES tblEstudiante (IDEst))
+
+INSERT INTO tblUsuario VALUES (001,'Rojas','Reza','Percy','Maculino','Rojas.reza@hotmail.com','svfrbvr')
+INSERT INTO tblUsuario VALUES (002,'Prado','Gonzales','Erica','Femenino','Erica.123pg@hotmail.com','nyuunur')
+INSERT INTO tblUsuario VALUES (003,'Saenz','Laura','Frank','Maculino','FrnakSaenz_l@hotmail.com','1258ihugc')
+INSERT INTO tblUsuario VALUES (004,'Gomes','Garcia','Brayan','Maculino','Brayan.G95@hotmail.com','5d5x1x4x')
+INSERT INTO tblUsuario VALUES (005,'Coronel','Damian','Natali','Femenino','Coronel129@gmail.com','swv7979esw4')
+
+SELECT * FROM tblUsuario
+
+INSERT INTO tblAdministrador VALUES (001,'Meza','Suares','Juan','Maculino','Jmeza@hotmail.com','ce49cecc')
+INSERT INTO tblAdministrador VALUES (002,'Moran','Aliaga','Norma','Femenino','Nmoranpg@hotmail.com','sc49ce4c')
+
+SELECT * FROM tblAdministrador
+
