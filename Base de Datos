@@ -1,61 +1,70 @@
+USE Ingles_web;
+GO
 
+SET DATEFORMAT MDY
+CREATE TABLE tblTemas (
+IDTema INT PRIMARY KEY,
+TituloTema VARCHAR (50) NOT NULL,
+DescrTema VARCHAR (50) NOT NULL)
 
-USE MASTER
-CREATE DATABASE DBAppIngles
+CREATE TABLE tblClases (
+IDClase INT PRIMARY KEY,
+IDTema INT NOT NULL,
+NomClase VARCHAR (25) NOT NULL,
+FOREIGN KEY (IDTema) REFERENCES  tblTemas (IDTema))
 
-USE DBAppIngles
-CREATE TABLE tblEstudiante (
-IDEst INT PRIMARY KEY,
-DNIEst INT NOT NULL,
-EstApellidoPaterno VARCHAR(25) NOT NULL,
-EstApellidoMaterno VARCHAR(25) NOT NULL,
-EstNombre VARCHAR(25) NOT NULL,
-EstGenero VARCHAR (20) NOT NULL,
-EstEmail VARCHAR(80) NOT NULL,
-EstPassword VARCHAR(30) NOT NULL)
+CREATE TABLE tblRescurso (
+IDRecurso INT PRIMARY KEY,
+IDClase INT NOT NULL,
+TipoRecurso VARCHAR (50) NOT NULL,
+ArchRecurso VARCHAR (50) NOT NULL,
+FOREIGN KEY (IDClase) REFERENCES tblClases (IDClase))
+
+CREATE TABLE tblNiveles (
+IDNivel INT PRIMARY KEY NOT NULL,
+NivNombre VARCHAR (25) NOT NULL)
 
 CREATE TABLE tblDocente (
 IDDocente INT PRIMARY KEY,
-DNIDoc INT NOT NULL,
-DocApellidoPaterno VARCHAR(25) NOT NULL,
-DocApellidoMaterno VARCHAR(25) NOT NULL,
-DocNombre VARCHAR(25) NOT NULL,
-DocGenero VARCHAR (20) NOT NULL,
-DocEmail VARCHAR(80) NOT NULL,
-DocPassword VARCHAR(30) NOT NULL)
+DocApellPaterno VARCHAR (25) NOT NULL,
+DocApellMaterno VARCHAR (25) NOT NULL,
+DocNombres VARCHAR (25) NOT NULL)
 
-CREATE TABLE tblNiveles (
-IDNivel INT PRIMARY KEY,
-IDEst INT NOT NULL,
-NivNombre VARCHAR (25) NOT NULL,
-FOREIGN KEY (IDEst) REFERENCES tblEstudiante (IDEst))
-
-CREATE TABLE tblTemario (
-IDTemario INT PRIMARY KEY,
-TemNombre VARCHAR (25) NOT NULL,
+CREATE TABLE tblGrupoEstudio (
+IDGrupoEstudio INT PRIMARY KEY,
+IDTema INT NOT NULL,
+IDDocente INT NOT NULL,
 IDNivel INT NOT NULL,
+FOREIGN KEY (IDTema) REFERENCES tblTemas (IDTema),
+FOREIGN KEY (IDDocente) REFERENCES tblDocente (IDDocente),
 FOREIGN KEY (IDNivel) REFERENCES tblNiveles (IDNivel))
+
+CREATE TABLE tblEstudiante (
+IDEstudiante INT PRIMARY KEY,
+EstApellPaterno VARCHAR (25) NOT NULL,
+EstApellMaterno VARCHAR (25) NOT NULL,
+EstNombres VARCHAR (25) NOT NULL)
+
+CREATE TABLE tblMatricula (
+IDMatricula INT PRIMARY KEY,
+IDGrupoEstudio INT NOT NULL,
+IDEstudiante INT NOT NULL,
+PagoMatricula INT NOT NULL,
+FOREIGN KEY (IDGrupoEstudio) REFERENCES tblGrupoEstudio (IDGrupoEstudio),
+FOREIGN KEY (IDEstudiante) REFERENCES tblEstudiante (IDEstudiante))
 
 CREATE TABLE tblNotas (
 IDNotas INT PRIMARY KEY,
+IDMatricula INT NOT NULL,
+TipoExamen INT NOT NULL,
+Nota INT NOT NULL,
+FOREIGN KEY (IDMatricula) REFERENCES tblMatricula (IDMatricula))
+
+CREATE TABLE tblLogin (
+IDLogin INT PRIMARY KEY,
+Usuario Varchar(8) NOT NULL,
+Pasword Varchar (10) NOT NULL,
+IDEstudiante INT NOT NULL,
 IDDocente INT NOT NULL,
-IDEst INT NOT NULL,
-Examen1 DECIMAL NOT NULL,
-Examen2 DECIMAL NOT NULL,
-Examen3 DECIMAL NOT NULL,
 FOREIGN KEY (IDDocente) REFERENCES tblDocente (IDDocente),
-FOREIGN KEY (IDEst) REFERENCES tblEstudiante (IDEst))
-
-INSERT INTO tblUsuario VALUES (001,'Rojas','Reza','Percy','Maculino','Rojas.reza@hotmail.com','svfrbvr')
-INSERT INTO tblUsuario VALUES (002,'Prado','Gonzales','Erica','Femenino','Erica.123pg@hotmail.com','nyuunur')
-INSERT INTO tblUsuario VALUES (003,'Saenz','Laura','Frank','Maculino','FrnakSaenz_l@hotmail.com','1258ihugc')
-INSERT INTO tblUsuario VALUES (004,'Gomes','Garcia','Brayan','Maculino','Brayan.G95@hotmail.com','5d5x1x4x')
-INSERT INTO tblUsuario VALUES (005,'Coronel','Damian','Natali','Femenino','Coronel129@gmail.com','swv7979esw4')
-
-SELECT * FROM tblUsuario
-
-INSERT INTO tblAdministrador VALUES (001,'Meza','Suares','Juan','Maculino','Jmeza@hotmail.com','ce49cecc')
-INSERT INTO tblAdministrador VALUES (002,'Moran','Aliaga','Norma','Femenino','Nmoranpg@hotmail.com','sc49ce4c')
-
-SELECT * FROM tblAdministrador
-
+FOREIGN KEY (IDEstudiante) REFERENCES tblEstudiante (IDEstudiante))
